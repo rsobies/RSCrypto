@@ -15,16 +15,27 @@ TEST(TestCaseName, rsakey_gen) {
 	ASSERT_EQ(key.getType(), Key_t::RSA_key);
 }
 
-TEST(TestCaseName, sign) {
-	PairKey key, keyEc(Key_t::EC_key);
+TEST(TestCaseName, signRSA) {
+	PairKey key;
 
 	vector<unsigned char> msg = { 'a', 'd', 'f' };
 	auto sign=key.sign(msg);
-	auto signEc = keyEc.sign(msg);
+	
 	ASSERT_TRUE(sign.size() > 0);
-	ASSERT_TRUE(signEc.size() > 0);
+	
 
 	ASSERT_TRUE(key.verifySign(sign, msg));
+	
+}
+
+TEST(TestCaseName, signEC) {
+	PairKey keyEc(Key_t::EC_key);
+
+	vector<unsigned char> msg = { 'a', 'd', 'f', 'h', 'k' };	
+	auto signEc = keyEc.sign(msg);
+	cout << "sig ec len: "<<signEc.size()<<endl;
+	ASSERT_TRUE(signEc.size() > 0);
+
 	ASSERT_TRUE(keyEc.verifySign(signEc, msg));
 }
 
@@ -34,4 +45,6 @@ TEST(TestCaseName, ec_gen) {
 	ASSERT_TRUE(key.savePublicKey("public_ec.pem"));
 	ASSERT_TRUE(key.savePrivateKey("private_ec.pem"));
 }
+
+
 

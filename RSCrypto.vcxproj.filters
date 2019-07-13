@@ -24,13 +24,13 @@
     <ClInclude Include="openssl_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RSAKey1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PairKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X509Cert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +41,10 @@
     <ClCompile Include="openssl_types.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RSAKey1.cpp">
+    <ClCompile Include="PairKey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PairKey.cpp">
+    <ClCompile Include="X509Cert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

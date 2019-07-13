@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PairKey.h"
 #include <openssl/pem.h>
+#include <assert.h>
 
 PairKey::PairKey(Key_t type)
 {
@@ -8,11 +9,11 @@ PairKey::PairKey(Key_t type)
 	switch (type) {
 	case Key_t::EC_key:
 	{
-		uniqeECGroup ecGroup{ EC_GROUP_new_by_curve_name(NID_X9_62_prime256v1) , ECGroupDeleter() };
-		auto eckey = EC_KEY_new();
-		EC_KEY_set_group(eckey, ecGroup.get());
-		ret = EC_KEY_generate_key(eckey);
-		ret = EVP_PKEY_assign_EC_KEY(evp_ptr.get(), eckey);
+		auto eckey = EC_KEY_new_by_curve_name(NID_X9_62_prime256v1);
+		assert(1 == EC_KEY_generate_key(eckey));
+		assert(1 == EC_KEY_check_key(eckey));
+		assert(1 == EVP_PKEY_assign_EC_KEY(evp_ptr.get(), eckey));
+
 		break;
 	}
 	default:
@@ -20,11 +21,11 @@ PairKey::PairKey(Key_t type)
 
 		uniqeBignum bn_ptr(BN_new(), BIGNUMDeleter());
 
-		ret = BN_set_word(bn_ptr.get(), RSA_F4);
+		assert(1 == BN_set_word(bn_ptr.get(), RSA_F4));
 
-		ret = RSA_generate_key_ex(rsa, 2048, bn_ptr.get(), nullptr);
+		assert(1 == RSA_generate_key_ex(rsa, 2048, bn_ptr.get(), nullptr));
 
-		ret = EVP_PKEY_assign_RSA(evp_ptr.get(), rsa);
+		assert(1 == EVP_PKEY_assign_RSA(evp_ptr.get(), rsa));
 	}
 
 	bPrivate = true;
@@ -93,26 +94,31 @@ vector<unsigned char> PairKey::sign(const vector<unsigned char>& msg)
 	unsigned char sha[sha256Len];
 
 	SHA256(&(msg[0]), msg.size(), sha);
-	auto evpctx_ptr= newEVPCTX(evp_ptr);
+	auto evpctx_ptr = newEVPCTX(evp_ptr);
 
-	int ret=EVP_PKEY_sign_init(evpctx_ptr.get());
+	assert(1 == EVP_PKEY_sign_init(evpctx_ptr.get()));
 
-	ret=EVP_PKEY_CTX_set_signature_md(evpctx_ptr.get(), EVP_sha256());
+	assert(1 == EVP_PKEY_CTX_set_signature_md(evpctx_ptr.get(), EVP_sha256()));
 
 	size_t signLen = 0;
-	ret=EVP_PKEY_sign(evpctx_ptr.get(), NULL, &signLen, sha, sha256Len);
+	assert(1 == EVP_PKEY_sign(evpctx_ptr.get(), NULL, &signLen, sha, sha256Len));
 
 	vector<unsigned char> sig(signLen);
 
-	ret=EVP_PKEY_sign(evpctx_ptr.get(), &(sig[0]), &signLen, sha, sha256Len);
+	auto ret = EVP_PKEY_sign(evpctx_ptr.get(), &(sig[0]), &signLen, sha, sha256Len);
 
 	if (ret != 1) {
 		return vector<unsigned char>(0);
 	}
+
+	if (signLen != sig.size()) {
+		sig.resize(signLen);
+	}
+
 	return sig;
 }
 
-bool PairKey::verifySign(const vector<unsigned char> sign, const vector<unsigned char>& msg)
+bool PairKey::verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg)
 {
 	const int sha256Len = 32;
 	unsigned char sha[sha256Len];
@@ -120,11 +126,11 @@ bool PairKey::verifySign(const vector<unsigned char> sign, const vector<unsigned
 	SHA256(&(msg[0]), msg.size(), sha);
 	auto evpctx_ptr = newEVPCTX(evp_ptr);
 
-	int ret = EVP_PKEY_verify_init(evpctx_ptr.get());
+	assert(1 == EVP_PKEY_verify_init(evpctx_ptr.get()));
 
-	ret = EVP_PKEY_CTX_set_signature_md(evpctx_ptr.get(), EVP_sha256());
+	assert(1 == EVP_PKEY_CTX_set_signature_md(evpctx_ptr.get(), EVP_sha256()));
 
-	ret = EVP_PKEY_verify(evpctx_ptr.get(), &sign[0], sign.size(), sha, sha256Len);
-	
-	return ret==1;
+	auto ret = EVP_PKEY_verify(evpctx_ptr.get(), &sign[0], sign.size(), sha, sha256Len);
+	assert(ret != -2);
+	return ret == 1;
 }

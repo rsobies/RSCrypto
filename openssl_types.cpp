@@ -22,14 +22,22 @@ void OSSLDeleter<T>::operator()(T* p) {
 	else if constexpr (is_same<T, EVP_PKEY_CTX>::value) {
 		EVP_PKEY_CTX_free(p);
 	}
+	else if constexpr (is_same<T, X509>::value) {
+		X509_free(p);
+	}
 	else {
-		static_assert(false, "OSSLDeleter<T>::operator T must be type of EVP_PKEY_CTX, EC_GROUP, RSA, BIO, BIGNUM, EVP_PKEY");
+		static_assert(false, "OSSLDeleter<T>::operator T must be type of X509, EVP_PKEY_CTX, EC_GROUP, RSA, BIO, BIGNUM, EVP_PKEY");
 	}
 }
 
 uniqeEVP newEvp()
 {
 	return uniqeEVP{ EVP_PKEY_new(), EVPDeleter() };
+}
+
+uniqeX509 newX509()
+{
+	return uniqeX509{ X509_new(), X509Deleter() };
 }
 
 uniqeBIO newBIO(const string& filename, const string& mode) {

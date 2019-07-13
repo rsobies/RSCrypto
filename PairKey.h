@@ -13,10 +13,9 @@ public:
 	bool isPrivate();
 	Key_t getType();
 	vector<unsigned char> sign(const vector<unsigned char>& msg);
-	bool verifySign(const vector<unsigned char> sign, const vector<unsigned char>& msg);
+	bool verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg);
 
 protected:
 	bool bPrivate;
 	uniqeEVP evp_ptr= newEvp();
 };
-
