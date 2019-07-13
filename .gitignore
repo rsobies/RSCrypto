@@ -332,3 +332,4 @@ ASALocalRun/
 *.pem
 *.nuspec
 *.targets
+/nuspec.bin
