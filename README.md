@@ -1,2 +1,2 @@
 # RSCrypto
-Openssl wrapper
+Openssl wrapper c++17
