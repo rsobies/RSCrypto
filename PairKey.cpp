@@ -7,25 +7,28 @@ PairKey::PairKey(Key_t type)
 {
 	int ret = -1;
 	switch (type) {
-	case Key_t::EC_key:
-	{
-		auto eckey = EC_KEY_new_by_curve_name(NID_X9_62_prime256v1);
-		assert(1 == EC_KEY_generate_key(eckey));
-		assert(1 == EC_KEY_check_key(eckey));
-		assert(1 == EVP_PKEY_assign_EC_KEY(evp_ptr.get(), eckey));
+		case Key_t::EC_key:
+		{
+			auto eckey = EC_KEY_new_by_curve_name(NID_X9_62_prime256v1);
+			assert(1 == EC_KEY_generate_key(eckey));
+			assert(1 == EC_KEY_check_key(eckey));
+			assert(1 == EVP_PKEY_assign_EC_KEY(evp_ptr.get(), eckey));
 
-		break;
-	}
-	default:
-		auto rsa = RSA_new();
+			break;
+		}
+		default:
+		{
+			auto rsa = RSA_new();
 
-		uniqeBignum bn_ptr(BN_new(), BIGNUMDeleter());
+			uniqeBignum bn_ptr(BN_new(), BIGNUMDeleter());
 
-		assert(1 == BN_set_word(bn_ptr.get(), RSA_F4));
+			assert(1 == BN_set_word(bn_ptr.get(), RSA_F4));
 
-		assert(1 == RSA_generate_key_ex(rsa, 2048, bn_ptr.get(), nullptr));
+			assert(1 == RSA_generate_key_ex(rsa, 2048, bn_ptr.get(), nullptr));
 
-		assert(1 == EVP_PKEY_assign_RSA(evp_ptr.get(), rsa));
+			assert(1 == EVP_PKEY_assign_RSA(evp_ptr.get(), rsa));
+			
+		}
 	}
 
 	bPrivate = true;

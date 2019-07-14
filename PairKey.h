@@ -16,6 +16,7 @@ public:
 	vector<unsigned char> sign(const vector<unsigned char>& msg);
 	bool verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg);
 	friend class X509Cert;
+	
 protected:
 	bool bPrivate;
 	uniqeEVP evp_ptr= newEvp();
