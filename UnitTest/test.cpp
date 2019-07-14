@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "../PairKey.h"
+#include "../X509Cert.h"
 
 TEST(TestCaseName, rsakey_gen) {
 	PairKey key(Key_t::RSA_key);
@@ -15,28 +16,20 @@ TEST(TestCaseName, rsakey_gen) {
 	ASSERT_EQ(key.getType(), Key_t::RSA_key);
 }
 
-TEST(TestCaseName, signRSA) {
-	PairKey key;
+TEST(TestCaseName, sign) {
 
+	PairKey key;
 	vector<unsigned char> msg = { 'a', 'd', 'f' };
 	auto sign=key.sign(msg);
-	
 	ASSERT_TRUE(sign.size() > 0);
-	
-
 	ASSERT_TRUE(key.verifySign(sign, msg));
-	
-}
 
-TEST(TestCaseName, signEC) {
 	PairKey keyEc(Key_t::EC_key);
-
-	vector<unsigned char> msg = { 'a', 'd', 'f', 'h', 'k' };	
 	auto signEc = keyEc.sign(msg);
-	cout << "sig ec len: "<<signEc.size()<<endl;
+	cout << "sig ec len: " << signEc.size() << endl;
 	ASSERT_TRUE(signEc.size() > 0);
-
 	ASSERT_TRUE(keyEc.verifySign(signEc, msg));
+	
 }
 
 TEST(TestCaseName, ec_gen) {
@@ -44,6 +37,12 @@ TEST(TestCaseName, ec_gen) {
 	ASSERT_EQ(key.getType(), Key_t::EC_key);
 	ASSERT_TRUE(key.savePublicKey("public_ec.pem"));
 	ASSERT_TRUE(key.savePrivateKey("private_ec.pem"));
+}
+
+TEST(TestCaseName, x509) {
+	PairKey key, cakey;
+	X509Cert cert(key);
+	ASSERT_TRUE(cert.sign(cakey));
 }
 
 

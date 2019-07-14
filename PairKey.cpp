@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "PairKey.h"
 #include <openssl/pem.h>
-#include <assert.h>
+
 
 PairKey::PairKey(Key_t type)
 {

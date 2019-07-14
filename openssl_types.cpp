@@ -51,6 +51,7 @@ uniqeEVPCTX newEVPCTX(uniqeEVP& evp) {
 //to avoid linking error
 void dummyFunction()
 {
+	uniqeX509 kk{ X509_new(), X509Deleter() };
 	uniqeEVP evp_ptr{ EVP_PKEY_new(), EVPDeleter() };
 	uniqeBIO{ BIO_new_file("ggg","j") , BIODeleter() };
 	uniqeBignum bn_ptr(BN_new(), BIGNUMDeleter());
