@@ -36,7 +36,7 @@ PairKey::PairKey(Key_t type)
 
 bool PairKey::savePublicKey(const string& filename)
 {
-	uniqeBIO bio_ptr = newBIO(filename.c_str(), "w+");
+	auto bio_ptr = newBIO(filename.c_str(), "w+");
 
 	return PEM_write_bio_PUBKEY(bio_ptr.get(), evp_ptr.get());
 }

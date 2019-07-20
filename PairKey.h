@@ -5,6 +5,7 @@
 enum Key_t {RSA_key, EC_key, UNK};
 
 class PairKey{
+	friend class X509Cert;
 public:
 	PairKey(Key_t type=Key_t::RSA_key);
 	bool savePublicKey(const string& filename);
@@ -15,7 +16,7 @@ public:
 	Key_t getType();
 	vector<unsigned char> sign(const vector<unsigned char>& msg);
 	bool verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg);
-	friend class X509Cert;
+	
 	
 protected:
 	bool bPrivate;
