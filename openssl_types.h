@@ -4,6 +4,7 @@
 #include <openssl/evp.h>
 #include <openssl/ec.h>
 #include <openssl/x509.h>
+#include <openssl/cms.h>
 #include <memory>
 
 using namespace std;
@@ -19,6 +20,8 @@ using BIGNUMDeleter=OSSLDeleter<BIGNUM>;
 using ECGroupDeleter=OSSLDeleter<EC_GROUP>;
 using EVPCTXDeleter=OSSLDeleter<EVP_PKEY_CTX>;
 using X509Deleter=OSSLDeleter<X509>;
+using CMSDeleter=OSSLDeleter<CMS_ContentInfo>;
+using X509STRDeleter=OSSLDeleter<X509_STORE>;
 
 using uniqeEVP=unique_ptr<EVP_PKEY, EVPDeleter>;
 using uniqeBIO=unique_ptr<BIO, BIODeleter>;
@@ -26,8 +29,12 @@ using uniqeBignum=unique_ptr<BIGNUM, BIGNUMDeleter>;
 using uniqeECGroup=unique_ptr<EC_GROUP, ECGroupDeleter>;
 using uniqeEVPCTX=unique_ptr< EVP_PKEY_CTX, EVPCTXDeleter>;
 using uniqeX509=unique_ptr<X509, X509Deleter>;
+using uniqeCMS=unique_ptr<CMS_ContentInfo, CMSDeleter>;
+using uniqeX509STR=unique_ptr<X509_STORE, X509STRDeleter>;
 
+uniqeBIO newBIO();
 uniqeEVP newEvp();
+uniqeX509STR newX509STR();
 uniqeX509 newX509();
 uniqeBIO newBIO(const string& filename, const string& mode);
 uniqeEVPCTX newEVPCTX(uniqeEVP& evp);

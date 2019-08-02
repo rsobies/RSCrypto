@@ -33,6 +33,9 @@
     <ClInclude Include="X509Cert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CMS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="X509Cert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

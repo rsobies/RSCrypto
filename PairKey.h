@@ -1,11 +1,13 @@
 #pragma once
 #include "openssl_types.h"
 #include "X509Cert.h"
+#include "CMS.h"
 
 enum Key_t {RSA_key, EC_key, UNK};
 
 class PairKey{
 	friend class X509Cert;
+	friend class CMS;
 public:
 	PairKey(Key_t type=Key_t::RSA_key);
 	bool savePublicKey(const string& filename);

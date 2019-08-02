@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CMS.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="PairKey.h" />
     <ClInclude Include="openssl_types.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="X509Cert.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CMS.cpp" />
     <ClCompile Include="PairKey.cpp" />
     <ClCompile Include="openssl_types.cpp" />
     <ClCompile Include="pch.cpp">

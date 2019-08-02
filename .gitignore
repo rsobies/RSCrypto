@@ -333,3 +333,6 @@ ASALocalRun/
 *.nuspec
 *.targets
 /nuspec.bin
+/UnitTest/cmcontent.txt
+/UnitTest/errors.txt
+/UnitTest/errors1.txt
