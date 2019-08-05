@@ -9,9 +9,10 @@ class CMS
 {
 public:
 	bool signedData(const X509Cert& cert, const PairKey& privKey, const string& dataFilename);
-	bool saveSignedData(const string& filename);
+	bool save(const string& filename);
 	bool verifySignedData(const PairKey& caPubKey);
 	bool readFromFile(const string& cmsFilename);
+	bool toEnvelope(const string& dataFilename, const vector<X509Cert>& receipments);
 private:
 	uniqeCMS cms_ptr;
 	uniqeBIO bioData_ptr;

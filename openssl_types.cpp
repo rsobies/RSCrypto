@@ -31,8 +31,12 @@ void OSSLDeleter<T>::operator()(T* p) {
 	else if constexpr (is_same < T, X509_STORE>::value) {
 		X509_STORE_free(p);
 	}
+	else if constexpr (is_same < T, stack_st_X509>::value) {
+		sk_X509_free(p);
+	}
+	
 	else {
-		static_assert(false, "OSSLDeleter<T>::operator() T must be type of X509_STORE, CMS_ContentInfo, X509, EVP_PKEY_CTX, EC_GROUP, RSA, BIO, BIGNUM, EVP_PKEY");
+		static_assert(false, "OSSLDeleter<T>::operator() T must be type of stack_st_X509, X509_STORE, CMS_ContentInfo, X509, EVP_PKEY_CTX, EC_GROUP, RSA, BIO, BIGNUM, EVP_PKEY");
 	}
 }
 
@@ -58,6 +62,10 @@ uniqeBIO newBIO() {
 	return uniqeBIO{ BIO_new(BIO_s_mem()) , BIODeleter() };
 }
 
+uniqeX509Stack newX509Stack() {
+	return uniqeX509Stack{ sk_X509_new_null() , X509StackDeleter() };
+}
+
 uniqeEVPCTX newEVPCTX(uniqeEVP& evp) {
 	return uniqeEVPCTX{ EVP_PKEY_CTX_new(evp.get(), nullptr), EVPCTXDeleter() };
 }
@@ -65,6 +73,7 @@ uniqeEVPCTX newEVPCTX(uniqeEVP& evp) {
 //to avoid linking error
 void dummyFunction()
 {
+	uniqeX509Stack{ sk_X509_new_null() , X509StackDeleter() };
 	uniqeX509STR{ X509_STORE_new(), X509STRDeleter() };
 	uniqeCMS{ nullptr, CMSDeleter() };
 	uniqeX509 kk{ X509_new(), X509Deleter() };

@@ -22,6 +22,7 @@ using EVPCTXDeleter=OSSLDeleter<EVP_PKEY_CTX>;
 using X509Deleter=OSSLDeleter<X509>;
 using CMSDeleter=OSSLDeleter<CMS_ContentInfo>;
 using X509STRDeleter=OSSLDeleter<X509_STORE>;
+using X509StackDeleter=OSSLDeleter<stack_st_X509>;
 
 using uniqeEVP=unique_ptr<EVP_PKEY, EVPDeleter>;
 using uniqeBIO=unique_ptr<BIO, BIODeleter>;
@@ -31,7 +32,9 @@ using uniqeEVPCTX=unique_ptr< EVP_PKEY_CTX, EVPCTXDeleter>;
 using uniqeX509=unique_ptr<X509, X509Deleter>;
 using uniqeCMS=unique_ptr<CMS_ContentInfo, CMSDeleter>;
 using uniqeX509STR=unique_ptr<X509_STORE, X509STRDeleter>;
+using uniqeX509Stack=unique_ptr<stack_st_X509, X509StackDeleter>;
 
+uniqeX509Stack newX509Stack();
 uniqeBIO newBIO();
 uniqeEVP newEvp();
 uniqeX509STR newX509STR();
