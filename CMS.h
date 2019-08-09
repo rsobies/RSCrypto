@@ -13,8 +13,10 @@ public:
 	bool verifySignedData(const PairKey& caPubKey);
 	bool readFromFile(const string& cmsFilename);
 	bool toEnvelope(const string& dataFilename, const vector<X509Cert>& receipments);
+	bool decodeEnvelope(const PairKey& privKey);
 private:
 	uniqeCMS cms_ptr;
 	uniqeBIO bioData_ptr;
+	uniqeBIO encodedData_ptr;
 };
 

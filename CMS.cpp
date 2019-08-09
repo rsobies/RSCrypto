@@ -29,6 +29,14 @@ bool CMS::toEnvelope(const string& dataFilename, const vector<X509Cert>& receipm
 	return cms_ptr !=nullptr;
 }
 
+bool CMS::decodeEnvelope(const PairKey& privKey)
+{
+	encodedData_ptr = newBIO();
+	auto ret=CMS_decrypt(cms_ptr.get(), privKey.evp_ptr.get(), nullptr, nullptr, encodedData_ptr.get(), CMS_TEXT);
+	
+	return ret == 1;
+}
+
 
 bool CMS::save(const string& filename)
 {
@@ -47,8 +55,8 @@ bool CMS::verifySignedData(const PairKey& caPubKey)
 		return false;
 	}
 	ERR_clear_error();
-	auto biop = newBIO();
-	ret=CMS_verify(cms_ptr.get(), nullptr, x509Str.get(), nullptr, nullptr, CMS_TEXT);
+	encodedData_ptr = newBIO();
+	ret=CMS_verify(cms_ptr.get(), nullptr, x509Str.get(), nullptr, encodedData_ptr.get(), CMS_TEXT);
 	/*
 	if (ret != 1) {
 		auto errF=newBIO("errors.txt", "w+");

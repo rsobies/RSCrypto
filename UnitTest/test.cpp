@@ -48,7 +48,7 @@ public:
 
 			CMS cms;
 			cms.signedData(cert, pubKey, "pliczek.txt");
-			cms.saveSignedData("cms.pem");
+			cms.save("cms.pem");
 		}
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
@@ -174,6 +174,25 @@ TEST_F(RSCryptoTestUnit, x509) {
 
 		ASSERT_TRUE(cert.verify(pubKey));
 	}
+}
+
+TEST_F(RSCryptoTestUnit, envelope) {
+
+	PairKey pubKey, cakey;
+
+	X509Cert cert(pubKey);
+	cert.setSubject("UK", "moja", "myhost");
+	ASSERT_TRUE(cert.sign(cakey));
+	
+	CMS cms;
+	vector< X509Cert> certs;
+	certs.push_back(move(cert));
+
+	ASSERT_TRUE(cms.toEnvelope("pliczek.txt", certs));
+	ASSERT_TRUE(cms.save("koperta.pem"));
+
+	ASSERT_TRUE(cms.decodeEnvelope(pubKey));
+
 }
 
 TEST_F(RSCryptoTestUnit, cms) {
