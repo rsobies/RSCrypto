@@ -16,7 +16,8 @@ class PairKey{
 	friend class CMS;
 public:
 	/// <summary>
-	/// generate a private key/public key with given algorithm
+	/// generate a private/public key with given algorithm
+	/// default is rsa
 	/// </summary>
 	/// <param name="type">key algorithm, rsa, ec</param>
 	PairKey(Key_t type=Key_t::RSA_key);
