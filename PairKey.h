@@ -4,7 +4,7 @@
 #include "CMS.h"
 
 /// <summary>
-/// list of supported keyalgorithms
+/// list of supported key algorithms
 /// </summary>
 enum Key_t {RSA_key, EC_key, UNK};
 
@@ -28,8 +28,25 @@ public:
 	/// <returns>true if operation succeed</returns>
 	bool savePublicKey(const string& filename);
 
+	/// <summary>
+	/// write private key to a file in pem format
+	/// </summary>
+	/// <param name="filename">full path of file</param>
+	/// <returns>true if operation succeed</returns>
 	bool savePrivateKey(const string& filename);
+
+	/// <summary>
+	/// read public key from pem file
+	/// </summary>
+	/// <param name="filename">full path of file</param>
+	/// <returns>true if operation succeed</returns>
 	bool readPublicKey(const string& filename);
+
+	/// <summary>
+	/// read private key from pem file
+	/// </summary>
+	/// <param name="filename">full path of file</param>
+	/// <returns>true if operation succeed</returns>
 	bool readPrivate(const string& filename);
 
 	/// <summary>
