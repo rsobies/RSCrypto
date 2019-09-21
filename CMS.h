@@ -5,6 +5,9 @@
 class PairKey;
 class X509Cert;
 
+/// <summary>
+/// wrapper class of cyptographic message syntax
+/// </summary>
 class CMS
 {
 public:
