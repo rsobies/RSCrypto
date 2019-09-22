@@ -30,7 +30,11 @@ bool CMS::toEnvelope(const string& dataFilename, const vector<X509Cert>& receipm
 	}
 	
 	auto BioIn=newBIO(dataFilename, "r");
-	cms_ptr = uniqeCMS{ CMS_encrypt(x509Stack.get(), BioIn.get(), EVP_des_ede3_cbc(), CMS_TEXT), CMSDeleter() };
+	cms_ptr = uniqeCMS{ CMS_encrypt(x509Stack.get(), 
+									BioIn.get(), 
+									EVP_des_ede3_cbc(), 
+									CMS_TEXT), 
+						CMSDeleter() };
 
 	return cms_ptr !=nullptr;
 }
@@ -38,18 +42,21 @@ bool CMS::toEnvelope(const string& dataFilename, const vector<X509Cert>& receipm
 bool CMS::decodeEnvelope(const PairKey& privKey)
 {
 	encodedData_ptr = newBIO();
-	auto ret=CMS_decrypt(cms_ptr.get(), privKey.evp_ptr.get(), nullptr, nullptr, encodedData_ptr.get(), CMS_TEXT);
+	auto ret=CMS_decrypt(cms_ptr.get(), 
+						privKey.evp_ptr.get(), 
+						nullptr, 
+						nullptr, 
+						encodedData_ptr.get(),
+						CMS_TEXT);
 	
 	return ret == 1;
 }
 
 
 bool CMS::save(const string& filename)
-{
-	
+{	
 	auto bioOut=newBIO(filename, "w+");
-	//DECLARE_PEM_rw(CMS, CMS_ContentInfo);
-	//auto ret = PEM_write_bio_CMS(bioOut.get(), cms_ptr.get());
+	
 	auto ret= SMIME_write_CMS(bioOut.get(), cms_ptr.get(), nullptr, CMS_TEXT);
 	return ret==1;
 }
@@ -65,7 +72,13 @@ bool CMS::verifySignedData(const PairKey& caPubKey)
 	}
 	ERR_clear_error();
 	encodedData_ptr = newBIO();
-	ret=CMS_verify(cms_ptr.get(), nullptr, x509Str.get(), nullptr, encodedData_ptr.get(), CMS_TEXT);
+
+	ret=CMS_verify(cms_ptr.get(), 
+					nullptr, 
+					x509Str.get(),
+					nullptr, 
+					encodedData_ptr.get(), 
+					CMS_TEXT);
 	/*
 	if (ret != 1) {
 		auto errF=newBIO("errors.txt", "w+");
@@ -82,7 +95,8 @@ bool CMS::readFromFile(const string& cmsFilename)
 		return false;
 	}
 
-	cms_ptr = uniqeCMS{ SMIME_read_CMS(bioCms.get(), nullptr), CMSDeleter() };
+	cms_ptr = uniqeCMS{ SMIME_read_CMS(bioCms.get(), nullptr), 
+						CMSDeleter() };
 	return cms_ptr == nullptr;
 	
 }
