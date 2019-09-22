@@ -68,10 +68,6 @@ private:
 	/// </summary>
 	uniqeCMS cms_ptr;
 
-	/// <summary>
-	/// 
-	/// </summary>
-	uniqeBIO bioData_ptr;
 	uniqeBIO encodedData_ptr;
 };
 

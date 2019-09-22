@@ -58,10 +58,10 @@ public:
 	{
 		_CrtMemCheckpoint(&state2);
 
-		//EXPECT_EQ(0, _CrtMemDifference(&state3, &state1, &state2));
+		EXPECT_EQ(0, _CrtMemDifference(&state3, &state1, &state2));
 
-		//if (_CrtMemDifference(&state3, &state1, &state2))
-			//_CrtMemDumpStatistics(&state3);
+		if (_CrtMemDifference(&state3, &state1, &state2))
+			_CrtMemDumpStatistics(&state3);
 	}
 };
 
@@ -70,7 +70,7 @@ public:
 
 private:
 
-	CrtCheckMemory check;
+	//CrtCheckMemory check;
 };
 
 TEST_F(RSCryptoTestUnit, rsakey_gen) {

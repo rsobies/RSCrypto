@@ -3,18 +3,19 @@
 #include "X509Cert.h"
 #include "PairKey.h"
 #include <openssl/err.h>
+#include <openssl/pem.h>
 
 bool CMS::signedData(const X509Cert& cert, const PairKey& privKey, const string& dataFilename)
 {	
-	bioData_ptr =newBIO(dataFilename, "r");
-	if (bioData_ptr==nullptr) {
+	auto bioDataIn_ptr =newBIO(dataFilename, "r");
+	if (bioDataIn_ptr ==nullptr) {
 		return false;
 	}
 	
 	cms_ptr = uniqeCMS{ CMS_sign(cert.x509_ptr.get(), 
 								 privKey.evp_ptr.get(), 
 								 nullptr, 
-								 bioData_ptr.get(), 
+								 bioDataIn_ptr.get(),
 								 CMS_TEXT), 
 			  CMSDeleter() };
 	
@@ -47,8 +48,9 @@ bool CMS::save(const string& filename)
 {
 	
 	auto bioOut=newBIO(filename, "w+");
-	//PEM_write_bio_CMS(bioOut.get(), cms_ptr.get());
-	auto ret=PEM_write_bio_CMS_stream(bioOut.get(), cms_ptr.get(), bioData_ptr.get(), CMS_TEXT);
+	//DECLARE_PEM_rw(CMS, CMS_ContentInfo);
+	//auto ret = PEM_write_bio_CMS(bioOut.get(), cms_ptr.get());
+	auto ret= SMIME_write_CMS(bioOut.get(), cms_ptr.get(), nullptr, CMS_TEXT);
 	return ret==1;
 }
 
