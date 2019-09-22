@@ -72,44 +72,7 @@ private:
 
 	CrtCheckMemory check;
 };
-/*
-TEST_F(RSCryptoTestUnit, memLeak) {
-	//new int[6];
-	int start = 1;
-	{
 
-		auto eckeyPub = EC_KEY_new_by_curve_name(NID_X9_62_prime256v1);
-		assert(1 == EC_KEY_generate_key(eckeyPub));
-		assert(1 == EC_KEY_check_key(eckeyPub));
-
-		auto evpPub = EVP_PKEY_new();
-		assert(1 == EVP_PKEY_assign_EC_KEY(evpPub, eckeyPub));
-
-		auto eckeyCA = EC_KEY_new_by_curve_name(NID_X9_62_prime256v1);
-		assert(1 == EC_KEY_generate_key(eckeyCA));
-		assert(1 == EC_KEY_check_key(eckeyCA));
-
-		auto evpCA = EVP_PKEY_new();
-		assert(1 == EVP_PKEY_assign_EC_KEY(evpCA, eckeyCA));
-
-		auto cert = X509_new();
-
-		assert(1 == X509_set_pubkey(cert, evpPub));
-
-		auto ret1 = X509_sign(cert, evpCA, EVP_sha256());
-
-		auto ret = X509_verify(cert, evpCA);
-
-		EVP_PKEY_free(evpCA);
-		EVP_PKEY_free(evpPub);
-		X509_free(cert);
-
-	}
-
-
-	int end = 1;
-}
-*/
 TEST_F(RSCryptoTestUnit, rsakey_gen) {
 
 	PairKey key(Key_t::RSA_key);

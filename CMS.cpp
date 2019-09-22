@@ -11,7 +11,12 @@ bool CMS::signedData(const X509Cert& cert, const PairKey& privKey, const string&
 		return false;
 	}
 	
-	cms_ptr = uniqeCMS{ CMS_sign(cert.x509_ptr.get(), privKey.evp_ptr.get(), nullptr, bioData_ptr.get(), CMS_TEXT), CMSDeleter() };
+	cms_ptr = uniqeCMS{ CMS_sign(cert.x509_ptr.get(), 
+								 privKey.evp_ptr.get(), 
+								 nullptr, 
+								 bioData_ptr.get(), 
+								 CMS_TEXT), 
+			  CMSDeleter() };
 	
 	return cms_ptr!=nullptr;
 }
@@ -40,7 +45,9 @@ bool CMS::decodeEnvelope(const PairKey& privKey)
 
 bool CMS::save(const string& filename)
 {
+	
 	auto bioOut=newBIO(filename, "w+");
+	//PEM_write_bio_CMS(bioOut.get(), cms_ptr.get());
 	auto ret=PEM_write_bio_CMS_stream(bioOut.get(), cms_ptr.get(), bioData_ptr.get(), CMS_TEXT);
 	return ret==1;
 }
