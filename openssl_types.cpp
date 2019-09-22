@@ -70,7 +70,9 @@ uniqeEVPCTX newEVPCTX(uniqeEVP& evp) {
 	return uniqeEVPCTX{ EVP_PKEY_CTX_new(evp.get(), nullptr), EVPCTXDeleter() };
 }
 
-//to avoid linking error
+/// <summary>
+/// to avoid linking errors, instantination of template OSSLDeleter
+/// </summary>
 void dummyFunction()
 {
 	uniqeX509Stack{ sk_X509_new_null() , X509StackDeleter() };

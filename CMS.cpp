@@ -3,7 +3,6 @@
 #include "X509Cert.h"
 #include "PairKey.h"
 #include <openssl/err.h>
-#include <openssl/pem.h>
 
 bool CMS::signedData(const X509Cert& cert, const PairKey& privKey, const string& dataFilename)
 {	
@@ -66,10 +65,12 @@ bool CMS::verifySignedData(const PairKey& caPubKey)
 	X509Cert certCA(caPubKey);
 	
 	auto x509Str=newX509STR();
+
 	auto ret=X509_STORE_add_cert(x509Str.get(), certCA.x509_ptr.get());
 	if (ret != 1) {
 		return false;
 	}
+
 	ERR_clear_error();
 	encodedData_ptr = newBIO();
 

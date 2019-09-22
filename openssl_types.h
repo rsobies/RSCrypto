@@ -8,9 +8,15 @@
 #include <memory>
 
 using namespace std;
-
+/// <summary>
+/// functional structure used as deletion function for openssl types
+/// </summary>
 template<typename T>
 struct OSSLDeleter {
+	/// <summary>
+	/// invoke to release openssl types
+	/// </summary>
+	/// <param name="p">openssl object to free</param>
 	void operator()(T* p);
 };
 
@@ -34,6 +40,9 @@ using uniqeCMS=unique_ptr<CMS_ContentInfo, CMSDeleter>;
 using uniqeX509STR=unique_ptr<X509_STORE, X509STRDeleter>;
 using uniqeX509Stack=unique_ptr<stack_st_X509, X509StackDeleter>;
 
+/// <summary>
+/// helper functions to create smart pointers for openssl types
+/// </summary>
 uniqeX509Stack newX509Stack();
 uniqeBIO newBIO();
 uniqeEVP newEvp();
