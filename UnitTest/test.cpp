@@ -4,21 +4,14 @@
 #include "../X509Cert.h"
 #include "../CMS.h"
 
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
+#include "MemoryLeakDetector.h"
 
 #include <openssl/engine.h>
 #include <openssl/conf.h>
 
-class CrtCheckMemory
-{
+class RSCryptoTestUnit : public testing::Test {
 public:
-	_CrtMemState state1;
-	_CrtMemState state2;
-	_CrtMemState state3;
-	CrtCheckMemory()
-	{
+	RSCryptoTestUnit() {
 		{
 			PairKey pubKey, cakey;
 
@@ -50,27 +43,12 @@ public:
 			cms.signedData(cert, pubKey, "pliczek.txt");
 			cms.save("cms.pem");
 		}
-		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-		_CrtMemCheckpoint(&state1);
+		memoryCheck.makeInitSnapshot();
 	}
-	~CrtCheckMemory()
-	{
-		_CrtMemCheckpoint(&state2);
-
-		EXPECT_EQ(0, _CrtMemDifference(&state3, &state1, &state2));
-
-		if (_CrtMemDifference(&state3, &state1, &state2))
-			_CrtMemDumpStatistics(&state3);
-	}
-};
-
-class RSCryptoTestUnit : public testing::Test {
-public:
-
 private:
 
-	//CrtCheckMemory check;
+	MemoryLeakDetector memoryCheck;
 };
 
 TEST_F(RSCryptoTestUnit, rsakey_gen) {
