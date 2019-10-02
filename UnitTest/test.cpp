@@ -12,6 +12,7 @@
 class RSCryptoTestUnit : public testing::Test {
 public:
 	RSCryptoTestUnit() {
+		//this section is just to initialize openssl and avoid memory leaks detection (false flag)
 		{
 			PairKey pubKey, cakey;
 
@@ -19,8 +20,7 @@ public:
 
 			cert.sign(cakey);
 			cert.verify(cakey);
-		}
-		{
+		
 			PairKey key;
 			vector<unsigned char> msg = { 'a', 'd', 'f' };
 			auto sign = key.sign(msg);
@@ -31,23 +31,25 @@ public:
 			auto signEc = keyEc.sign(msg);
 
 			keyEc.verifySign(signEc, msg);
-		}
-		{
-			PairKey pubKey, cakey;
+		
+			PairKey pubKey1, cakey1;
 
-			X509Cert cert(pubKey);
+			X509Cert cert1(pubKey1);
 
-			cert.sign(cakey);
+			cert1.sign(cakey1);
 
 			CMS cms;
-			cms.signedData(cert, pubKey, "pliczek.txt");
+			cms.signedData(cert1, pubKey1, "pliczek.txt");
 			cms.save("cms.pem");
 		}
 
 		memoryCheck.makeInitSnapshot();
 	}
 private:
-
+	/// <summary>
+	/// memoryCheck is created at the beginnig of each test method
+	/// and is destroyed at the end of test method
+	/// </summary>
 	MemoryLeakDetector memoryCheck;
 };
 
