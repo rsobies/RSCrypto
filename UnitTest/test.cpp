@@ -14,33 +14,17 @@ public:
 	RSCryptoTestUnit() {
 		//this section is just to initialize openssl and avoid memory leaks detection (false flag)
 		{
-			PairKey pubKey, cakey;
-
-			X509Cert cert(pubKey);
-
-			cert.sign(cakey);
-			cert.verify(cakey);
-		
-			PairKey key;
-			vector<unsigned char> msg = { 'a', 'd', 'f' };
-			auto sign = key.sign(msg);
-
-			key.verifySign(sign, msg);
-
-			PairKey keyEc(Key_t::EC_key);
-			auto signEc = keyEc.sign(msg);
-
-			keyEc.verifySign(signEc, msg);
-		
 			PairKey pubKey1, cakey1;
 
 			X509Cert cert1(pubKey1);
 
-			cert1.sign(cakey1);
-
 			CMS cms;
 			cms.signedData(cert1, pubKey1, "pliczek.txt");
-			cms.save("cms.pem");
+			
+			CMS cms2;
+			vector< X509Cert> certs;			
+			cms2.toEnvelope("pliczek.txt", certs);
+			
 		}
 
 		memoryCheck.makeInitSnapshot();
