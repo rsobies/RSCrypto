@@ -67,7 +67,5 @@ private:
 	/// with custom delete function
 	/// </summary>
 	uniqeCMS cms_ptr;
-
-	uniqeBIO encodedData_ptr;
 };
 

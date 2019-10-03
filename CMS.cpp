@@ -40,7 +40,7 @@ bool CMS::toEnvelope(const string& dataFilename, const vector<X509Cert>& receipm
 
 bool CMS::decodeEnvelope(const PairKey& privKey)
 {
-	encodedData_ptr = newBIO();
+	auto encodedData_ptr = newBIO();
 	auto ret=CMS_decrypt(cms_ptr.get(), 
 						privKey.evp_ptr.get(), 
 						nullptr, 
@@ -72,7 +72,7 @@ bool CMS::verifySignedData(const PairKey& caPubKey)
 	}
 
 	ERR_clear_error();
-	encodedData_ptr = newBIO();
+	auto encodedData_ptr = newBIO();
 
 	ret=CMS_verify(cms_ptr.get(), 
 					nullptr, 

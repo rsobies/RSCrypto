@@ -138,7 +138,7 @@ TEST_F(RSCryptoTestUnit, cms) {
 	{
 		CMS cms;
 		ASSERT_TRUE(cms.signedData(cert, pubKey, "pliczek.txt"));
-		//ASSERT_TRUE(cms.saveSignedData("cms.pem"));
+		ASSERT_TRUE(cms.save("cms.pem"));
 		ASSERT_TRUE(cms.verifySignedData(cakey));
 	}
 
