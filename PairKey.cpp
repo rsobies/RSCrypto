@@ -64,10 +64,7 @@ bool PairKey::readPrivate(const string& filename)
 		return false;
 	}
 
-	evp_ptr = uniqeEVP{ PEM_read_bio_PrivateKey(bio_ptr.get(), nullptr,nullptr, nullptr), EVPDeleter() };
-
-	bPrivate = evp_ptr != nullptr ? true : bPrivate;
-	return evp_ptr != nullptr;
+	return readPrivate(move(bio_ptr));
 }
 
 bool PairKey::isPrivate()
@@ -136,4 +133,40 @@ bool PairKey::verifySign(const vector<unsigned char>& sign, const vector<unsigne
 	auto ret = EVP_PKEY_verify(evpctx_ptr.get(), &sign[0], sign.size(), sha, sha256Len);
 	assert(ret != -2);
 	return ret == 1;
+}
+
+bool PairKey::readPrivate(uniqeBIO bioPtr)
+{
+	evp_ptr = uniqeEVP{ PEM_read_bio_PrivateKey(bioPtr.get(), nullptr,nullptr, nullptr), EVPDeleter() };
+
+	bPrivate = evp_ptr != nullptr ? true : bPrivate;
+	return evp_ptr != nullptr;
+}
+
+bool PairKey::parsePrivate(const string& privateKey) {
+
+	auto bio_ptr = uniqeBIO{ BIO_new(BIO_s_mem()) , BIODeleter() };
+
+	if (bio_ptr == nullptr) {
+		return false;
+	}
+
+	assert(-1 != BIO_printf(bio_ptr.get(), "%s", privateKey.c_str()));
+
+	return readPrivate(move(bio_ptr));
+}
+
+bool PairKey::parsePublic(const string& publicKey)
+{
+	auto bio_ptr = uniqeBIO{ BIO_new(BIO_s_mem()) , BIODeleter() };
+
+	if (bio_ptr == nullptr) {
+		return false;
+	}
+
+	assert(-1 != BIO_printf(bio_ptr.get(), "%s", publicKey.c_str()));
+
+	evp_ptr = uniqeEVP{ PEM_read_bio_PUBKEY(bio_ptr.get(), nullptr, nullptr, nullptr), EVPDeleter() };
+	bPrivate = false;
+	return evp_ptr != nullptr;
 }

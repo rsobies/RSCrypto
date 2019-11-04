@@ -77,6 +77,20 @@ public:
 	/// <returns>true if signature matches message</returns>
 	bool verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg);
 	
+
+	/// <summary>
+	///  Reads public key from string.
+	/// </summary>
+	/// <param name="publicKey">Public key value in pem format.</param>
+	/// <returns>>True if operation succeed.</returns>
+	bool parsePublic(const string& publicKey);
+
+	/// <summary>
+	/// Reads private key from string
+	/// </summary>
+	/// <param name="privateKey">Private key value in pem format</param>
+	/// <returns>True if operation succeed.</returns>
+	bool parsePrivate(const string& privateKey);
 	
 protected:
 	/// <summary>
@@ -88,4 +102,11 @@ protected:
 	/// unique_ptr holding openssl EVP structure with custom delete function
 	/// </summary>
 	uniqeEVP evp_ptr= newEvp();
+
+	/// <summary>
+	/// Reads private key from bio.
+	/// </summary>
+	/// <param name="bioPtr">BIO with private key to read from.</param>
+	/// <returns>True if operation succeed.</returns>
+	bool readPrivate(uniqeBIO bioPtr);
 };
