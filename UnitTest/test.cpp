@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <fstream>
 #include "../PairKey.h"
 #include "../X509Cert.h"
 #include "../CMS.h"
@@ -128,6 +129,11 @@ TEST_F(RSCryptoTestUnit, cms) {
 	X509Cert cert(pubKey);
 	cert.setSubject("UK", "moja", "myhost");
 	ASSERT_TRUE(cert.sign(cakey));
+	{
+		string tekst = "moj tekst";
+		ofstream out("pliczek.txt", ofstream::out | ofstream::trunc);
+		out << tekst;
+	}
 
 	{
 		CMS cms;
