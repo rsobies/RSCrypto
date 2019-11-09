@@ -34,14 +34,14 @@ PairKey::PairKey(Key_t type)
 	bPrivate = true;
 }
 
-bool PairKey::savePublicKey(const string& filename)
+bool PairKey::savePublicKey(const string& filename) const
 {
 	auto bio_ptr = newBIO(filename.c_str(), "w+");
 
 	return PEM_write_bio_PUBKEY(bio_ptr.get(), evp_ptr.get());
 }
 
-bool PairKey::savePrivateKey(const string& filename)
+bool PairKey::savePrivateKey(const string& filename) const
 {
 	uniqeBIO bio_ptr = newBIO(filename.c_str(), "w+");
 	return PEM_write_bio_PrivateKey(bio_ptr.get(), evp_ptr.get(), nullptr, nullptr, 0, nullptr, nullptr);
@@ -67,12 +67,12 @@ bool PairKey::readPrivate(const string& filename)
 	return readPrivate(move(bio_ptr));
 }
 
-bool PairKey::isPrivate()
+bool PairKey::isPrivate() const
 {
 	return bPrivate;
 }
 
-Key_t PairKey::getType()
+Key_t PairKey::getType() const
 {
 	if (evp_ptr == nullptr) {
 		return Key_t::UNK;
@@ -88,7 +88,7 @@ Key_t PairKey::getType()
 	}
 }
 
-vector<unsigned char> PairKey::sign(const vector<unsigned char>& msg)
+vector<unsigned char> PairKey::sign(const vector<unsigned char>& msg) const
 {
 	const int sha256Len = 32;
 	unsigned char sha[sha256Len];
@@ -118,7 +118,7 @@ vector<unsigned char> PairKey::sign(const vector<unsigned char>& msg)
 	return sig;
 }
 
-bool PairKey::verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg)
+bool PairKey::verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg) const
 {
 	const int sha256Len = 32;
 	unsigned char sha[sha256Len];

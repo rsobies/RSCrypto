@@ -6,7 +6,7 @@
 /// <summary>
 /// list of supported key algorithms
 /// </summary>
-enum Key_t {RSA_key, EC_key, UNK};
+enum class Key_t {RSA_key, EC_key, UNK};
 
 /// <summary>
 /// class representing a pair of keys, public and private
@@ -27,14 +27,14 @@ public:
 	/// </summary>
 	/// <param name="filename">full path of file</param>
 	/// <returns>true if operation succeed</returns>
-	bool savePublicKey(const string& filename);
+	bool savePublicKey(const string& filename) const;
 
 	/// <summary>
 	/// write private key to a file in pem format
 	/// </summary>
 	/// <param name="filename">full path of file</param>
 	/// <returns>true if operation succeed</returns>
-	bool savePrivateKey(const string& filename);
+	bool savePrivateKey(const string& filename) const;
 
 	/// <summary>
 	/// read public key from pem file
@@ -54,20 +54,20 @@ public:
 	/// private key is present
 	/// </summary>
 	/// <returns>is private key present</returns>
-	bool isPrivate();
+	bool isPrivate() const;
 
 	/// <summary>
 	/// gets a key algorithm used to generate this key
 	/// </summary>
 	/// <returns>key algorithm type</returns>
-	Key_t getType();
+	Key_t getType() const;
 
 	/// <summary>
 	/// signs a message
 	/// </summary>
 	/// <param name="msg">message to sign</param>
 	/// <returns>signature of the message</returns>
-	vector<unsigned char> sign(const vector<unsigned char>& msg);
+	vector<unsigned char> sign(const vector<unsigned char>& msg) const;
 
 	/// <summary>
 	/// checks the signature with a given message
@@ -75,7 +75,7 @@ public:
 	/// <param name="sign">signature to verify</param>
 	/// <param name="msg">message</param>
 	/// <returns>true if signature matches message</returns>
-	bool verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg);
+	bool verifySign(const vector<unsigned char>& sign, const vector<unsigned char>& msg) const;
 	
 
 	/// <summary>

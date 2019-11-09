@@ -66,7 +66,7 @@ uniqeX509Stack newX509Stack() {
 	return uniqeX509Stack{ sk_X509_new_null() , X509StackDeleter() };
 }
 
-uniqeEVPCTX newEVPCTX(uniqeEVP& evp) {
+uniqeEVPCTX newEVPCTX(const uniqeEVP& evp) {
 	return uniqeEVPCTX{ EVP_PKEY_CTX_new(evp.get(), nullptr), EVPCTXDeleter() };
 }
 

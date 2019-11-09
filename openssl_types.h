@@ -49,4 +49,4 @@ uniqeEVP newEvp();
 uniqeX509STR newX509STR();
 uniqeX509 newX509();
 uniqeBIO newBIO(const string& filename, const string& mode);
-uniqeEVPCTX newEVPCTX(uniqeEVP& evp);
+uniqeEVPCTX newEVPCTX(const uniqeEVP& evp);
