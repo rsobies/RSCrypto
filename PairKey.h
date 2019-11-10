@@ -1,7 +1,5 @@
 #pragma once
 #include "openssl_types.h"
-#include "X509Cert.h"
-#include "CMS.h"
 
 /// <summary>
 /// list of supported key algorithms
@@ -12,8 +10,6 @@ enum class Key_t {RSA_key, EC_key, UNK};
 /// class representing a pair of keys, public and private
 /// </summary>
 class PairKey{
-	friend class X509Cert;
-	friend class CMS;
 public:
 	/// <summary>
 	/// generate a private/public key with given algorithm
@@ -91,6 +87,12 @@ public:
 	/// <param name="privateKey">Private key value in pem format</param>
 	/// <returns>True if operation succeed.</returns>
 	bool parsePrivate(const string& privateKey);
+
+	/// <summary>
+	/// Gets internal openssl structure.
+	/// </summary>
+	/// <returns>Internal openssl structure.</returns>
+	const uniqeEVP& getEVP() const;
 	
 protected:
 	/// <summary>

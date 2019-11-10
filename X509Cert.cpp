@@ -8,7 +8,7 @@ X509Cert::X509Cert(const PairKey& pubKey)
 {
 	X509_gmtime_adj(X509_get_notBefore(x509_ptr.get()), 0);
 	X509_gmtime_adj(X509_get_notAfter(x509_ptr.get()), 31536000L);//365
-	assert(1==X509_set_pubkey(x509_ptr.get(), pubKey.evp_ptr.get()));
+	assert(1==X509_set_pubkey(x509_ptr.get(), pubKey.getEVP().get()));
 	ASN1_INTEGER_set(X509_get_serialNumber(x509_ptr.get()), 1);
 	setIssuerOrSubject("PL", "RSCrypto", "localhost", 2);
 	
@@ -16,14 +16,14 @@ X509Cert::X509Cert(const PairKey& pubKey)
 
 bool X509Cert::sign(const PairKey& caPrivKey)
 {
-	auto ret=X509_sign(x509_ptr.get(), caPrivKey.evp_ptr.get(), EVP_sha256());
+	auto ret=X509_sign(x509_ptr.get(), caPrivKey.getEVP().get(), EVP_sha256());
 	bSigned = ret != 0;
 	return bSigned;
 }
 
 bool X509Cert::verify(const PairKey& caPubKey)
 {
-	auto ret=X509_verify(x509_ptr.get(), caPubKey.evp_ptr.get());
+	auto ret=X509_verify(x509_ptr.get(), caPubKey.getEVP().get());
 	return ret==1;
 }
 

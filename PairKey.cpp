@@ -156,6 +156,11 @@ bool PairKey::parsePrivate(const string& privateKey) {
 	return readPrivate(move(bio_ptr));
 }
 
+const uniqeEVP& PairKey::getEVP() const
+{
+	return evp_ptr;
+}
+
 bool PairKey::parsePublic(const string& publicKey)
 {
 	auto bio_ptr = uniqeBIO{ BIO_new(BIO_s_mem()) , BIODeleter() };

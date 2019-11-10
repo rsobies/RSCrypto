@@ -12,7 +12,7 @@ bool CMS::signedData(const X509Cert& cert, const PairKey& privKey, const string&
 	}
 	
 	cms_ptr = uniqeCMS{ CMS_sign(cert.x509_ptr.get(), 
-								 privKey.evp_ptr.get(), 
+								 privKey.getEVP().get(),
 								 nullptr, 
 								 bioDataIn_ptr.get(),
 								 CMS_TEXT), 
@@ -42,7 +42,7 @@ bool CMS::decodeEnvelope(const PairKey& privKey)
 {
 	auto encodedData_ptr = newBIO();
 	auto ret=CMS_decrypt(cms_ptr.get(), 
-						privKey.evp_ptr.get(), 
+						privKey.getEVP().get(),
 						nullptr, 
 						nullptr, 
 						encodedData_ptr.get(),
