@@ -11,7 +11,7 @@ bool CMS::signedData(const X509Cert& cert, const PairKey& privKey, const string&
 		return false;
 	}
 	
-	cms_ptr = uniqeCMS{ CMS_sign(cert.x509_ptr.get(), 
+	cms_ptr = uniqeCMS{ CMS_sign(cert.getX509().get(),
 								 privKey.getEVP().get(),
 								 nullptr, 
 								 bioDataIn_ptr.get(),
@@ -25,7 +25,7 @@ bool CMS::toEnvelope(const string& dataFilename, const vector<X509Cert>& receipm
 	auto x509Stack = newX509Stack();
 
 	for (auto& cert : receipments) {
-		auto ret = sk_X509_push(x509Stack.get(), cert.x509_ptr.get());
+		auto ret = sk_X509_push(x509Stack.get(), cert.getX509().get());
 	}
 	
 	auto BioIn=newBIO(dataFilename, "r");
@@ -66,7 +66,7 @@ bool CMS::verifySignedData(const PairKey& caPubKey)
 	
 	auto x509Str=newX509STR();
 
-	auto ret=X509_STORE_add_cert(x509Str.get(), certCA.x509_ptr.get());
+	auto ret=X509_STORE_add_cert(x509Str.get(), certCA.getX509().get());
 	if (ret != 1) {
 		return false;
 	}

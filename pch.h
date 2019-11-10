@@ -13,6 +13,7 @@
 #include <memory>
 #include <vector>
 #include <assert.h>
+#include "openssl_types.h"
 
 using namespace std;
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "openssl_types.h"
+//#include "openssl_types.h"
 
-class PairKey;
+#include "PairKey.h"
 class X509Cert;
 
 /// <summary>

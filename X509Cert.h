@@ -1,15 +1,12 @@
 #pragma once
-#include "openssl_types.h"
-#include "CMS.h"
 
-class PairKey;
+#include "PairKey.h"
 
 /// <summary>
 /// representation of public key certyficate
 /// </summary>
 class X509Cert
 {
-	friend class CMS;
 public:
 	/// <summary>
 	/// creates public key certyfiacte (not signed)
@@ -61,6 +58,12 @@ public:
 	/// <param name="organization"></param>
 	/// <param name="commonName"></param>
 	void setIssuer(const string& country, const string& organization, const string& commonName);
+
+	/// <summary>
+	/// Gets internal openssl structure.
+	/// </summary>
+	/// <returns>X509 openssl structure.</returns>
+	const uniqeX509& getX509() const;
 
 private:
 	/// <summary>

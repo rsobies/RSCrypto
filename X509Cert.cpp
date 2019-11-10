@@ -59,6 +59,11 @@ void X509Cert::setIssuer(const string& country, const string& organization, cons
 	setIssuerOrSubject(country, organization, commonName, 1);
 }
 
+const uniqeX509& X509Cert::getX509() const
+{
+	return x509_ptr;
+}
+
 
 void X509Cert::setIssuerOrSubject(const string& country, const string& organization, const string& commonName, int type)
 {
