@@ -2,45 +2,45 @@
 #include "openssl_types.h"
 
 /// <summary>
-/// list of supported key algorithms
+/// List of supported key algorithms.
 /// </summary>
 enum class Key_t {RSA_key, EC_key, UNK};
 
 /// <summary>
-/// class representing a pair of keys, public and private
+/// Class representing a pair of keys, public and private.
 /// </summary>
 class PairKey{
 public:
 	/// <summary>
-	/// generate a private/public key with given algorithm
-	/// default is rsa
+	/// Generate a private/public key with given algorithm.
+	/// Default is rsa.
 	/// </summary>
 	/// <param name="type">key algorithm, rsa, ec</param>
 	PairKey(Key_t type=Key_t::RSA_key);
 
 	/// <summary>
-	/// write public key to a file in pem format
+	/// Write public key to a file in pem format.
 	/// </summary>
-	/// <param name="filename">full path of file</param>
+	/// <param name="filename">Full path of file.</param>
 	/// <returns>true if operation succeed</returns>
 	bool savePublicKey(const string& filename) const;
 
 	/// <summary>
-	/// write private key to a file in pem format
+	/// Write private key to a file in pem format.
 	/// </summary>
 	/// <param name="filename">full path of file</param>
-	/// <returns>true if operation succeed</returns>
+	/// <returns>True if operation succeed.</returns>
 	bool savePrivateKey(const string& filename) const;
 
 	/// <summary>
-	/// read public key from pem file
+	/// Reads public key from pem file.
 	/// </summary>
-	/// <param name="filename">full path of file</param>
-	/// <returns>true if operation succeed</returns>
+	/// <param name="filename">Full path of file.</param>
+	/// <returns>True if operation succeed.</returns>
 	bool readPublicKey(const string& filename);
 
 	/// <summary>
-	/// read private key from pem file
+	/// Reads private key from pem file.
 	/// </summary>
 	/// <param name="filename">full path of file</param>
 	/// <returns>true if operation succeed</returns>
@@ -82,7 +82,7 @@ public:
 	bool parsePublic(const string& publicKey);
 
 	/// <summary>
-	/// Reads private key from string
+	/// Reads private key from string.
 	/// </summary>
 	/// <param name="privateKey">Private key value in pem format</param>
 	/// <returns>True if operation succeed.</returns>
